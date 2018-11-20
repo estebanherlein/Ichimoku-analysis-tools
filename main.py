@@ -30,7 +30,7 @@ def tick():
             print("Fomo strikes! Let's buy some" + market + ' for ' + str(format_float(last)))
 
         if percent_chg < -20:
-            print('We should buy some ' + market + ' for ' + str(format_float(last)))
+            print('We should buy some ' + market + ' for ' + str(format_float(last))+ ', it is damn cheap right now')
 
 
 def simple_request(url):
