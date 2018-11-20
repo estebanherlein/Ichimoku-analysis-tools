@@ -27,7 +27,7 @@ def tick():
         percent_chg = ((last / day_close) - 1) * 100
 
         if 40 < percent_chg < 60:
-            print("Fomo strikes! Let's buy some" + market + ' for ' + str(format_float(last)))
+            print("Fomo strikes! Let's buy some " + market + ' for ' + str(format_float(last)))
 
         if percent_chg < -20:
             print('We should buy some ' + market + ' for ' + str(format_float(last))+ ', it is damn cheap right now')

@@ -1,5 +1,6 @@
 import requests
 
+
 class Analysis:
     def __init__(self, market, interval):
         self.id = self
@@ -14,6 +15,26 @@ class Analysis:
         for item in somedata:
             total = total + item['O']
         return total/length
+
+    def rsi(self, somedata):
+        length = len(somedata)
+        i = 0
+        totaldown = 0.0
+        totalup = 0.0
+        for item in somedata:
+            if i == 0:
+                lastclose = item['C']
+                i = i + 1
+            else:
+                thisclose = item['C']
+                if thisclose - lastclose >= 0:
+                    totalup = totalup + (thisclose - lastclose)
+                else:
+                    totaldown = totaldown + abs(thisclose - lastclose)
+                lastclose = item['C']
+        rs = (totalup /length) / (totaldown / length)
+        rsi = 100 - (100 / (1 + rs))
+        return rsi
 
     def trim_data(self, units):
         li = []
