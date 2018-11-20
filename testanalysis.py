@@ -18,6 +18,9 @@ class AnalysisTestCase(unittest.TestCase):
     def test_get30days(self):
         self.assertEqual(len(self.btceth.trim_data(30)), 30)
 
+    def test_getsma21days(self):
+        print(self.btceth.sma_units(self.btceth.trim_data(120)))
+
 
 if __name__ == "__main__":
     unittest.main()

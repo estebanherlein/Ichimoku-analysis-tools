@@ -8,6 +8,13 @@ class Analysis:
         string = 'https://bittrex.com/Api/v2.0/pub/market/GetTicks?marketName=' + market + '&tickInterval=' + interval
         self.data = self.simple_request(string)
 
+    def sma_units(self, somedata):
+        length = len(somedata)
+        total = 0
+        for item in somedata:
+            total = total + item['O']
+        return total/length
+
     def trim_data(self, units):
         li = []
         dataset = self.data['result']
