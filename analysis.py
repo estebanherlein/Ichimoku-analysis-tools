@@ -9,18 +9,17 @@ class Analysis:
         string = 'https://bittrex.com/Api/v2.0/pub/market/GetTicks?marketName=' + market + '&tickInterval=' + interval
         self.data = self.simple_request(string)
 
-    def sma_units(self, somedata):
-        length = len(somedata)
+    def calculate_sma(self, somedata):
         total = 0
         for item in somedata:
             total = total + item['O']
-        return total/length
+        return total / len(somedata)
 
-    def rsi(self, somedata):
+    def calculate_rsi(self, somedata):
         length = len(somedata)
         i = 0
-        totaldown = 0.0
-        totalup = 0.0
+        totaldown = 0
+        totalup = 0
         for item in somedata:
             if i == 0:
                 lastclose = item['C']
@@ -32,15 +31,14 @@ class Analysis:
                 else:
                     totaldown = totaldown + abs(thisclose - lastclose)
                 lastclose = item['C']
-        rs = (totalup /length) / (totaldown / length)
+        rs = (totalup / length) / (totaldown / length)
         rsi = 100 - (100 / (1 + rs))
         return rsi
 
     def trim_data(self, units):
         li = []
         dataset = self.data['result']
-        length = len(dataset)
-        firstcandle = length - units
+        firstcandle = len(dataset) - units
         i = 0
         for item in dataset:
             if i >= firstcandle:
@@ -54,5 +52,3 @@ class Analysis:
         r = requests.get(url)
         return r.json()
 
-    def sma(self):
-        return
