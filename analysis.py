@@ -6,8 +6,6 @@ class Analysis:
         self.id = self
         self.market = market
         self.interval = interval
-        string = 'https://bittrex.com/Api/v2.0/pub/market/GetTicks?marketName=' + market + '&tickInterval=' + interval
-        self.data = self.simple_request(string)
 
     def calculate_sma(self, somedata):
         total = 0
@@ -36,8 +34,9 @@ class Analysis:
         return rsi
 
     def trim_data(self, units):
+        data = self.simple_request(self.market, self.interval)
+        dataset = data['result']
         li = []
-        dataset = self.data['result']
         firstcandle = len(dataset) - units
         i = 0
         for item in dataset:
@@ -48,7 +47,14 @@ class Analysis:
                 i = i + 1
         return li
 
-    def simple_request(self, url):
+    def change_market(self, market):
+        self.market = market
+
+    def change_interval(self, interval):
+        self.interval = interval
+
+    def simple_request(self, market, interval):
+        url = 'https://bittrex.com/Api/v2.0/pub/market/GetTicks?marketName=' + market + '&tickInterval=' + interval
         r = requests.get(url)
         return r.json()
 

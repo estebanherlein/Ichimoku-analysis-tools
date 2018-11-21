@@ -1,5 +1,6 @@
 import time
 import requests
+import analysis
 
 TICK_INTERVAL = 60  # seconds
 
@@ -18,19 +19,28 @@ def main():
 
 def tick():
     print('Running routine')
-
+    agent = analysis.Analysis('USD-BTC', 'hour')
     market_summaries = simple_request('https://bittrex.com/api/v1.1/public/getmarketsummaries')
     for summary in market_summaries['result']:
         market = summary['MarketName']
-        day_close = summary['PrevDay']
         last = summary['Last']
-        percent_chg = ((last / day_close) - 1) * 100
+        agent.change_market(market)
+        rsi = agent.calculate_rsi(agent.trim_data(14))
+        sma_5 = agent.calculate_sma(agent.trim_data(5))
+        sma_50 = agent.calculate_sma(agent.trim_data(50))
+        sma_200 = agent.calculate_sma(agent.trim_data(200))
 
-        if 40 < percent_chg < 60:
-            print("Fomo strikes! Let's buy some " + market + ' for ' + str(format_float(last)))
+        if rsi < 20:
+            print("This Market is oversold :" + market + ' . RSI = ' + format_float(rsi))
 
-        if percent_chg < -20:
-            print('We should buy some ' + market + ' for ' + str(format_float(last))+ ', it is damn cheap right now')
+        if last >= sma_5 and last >= sma_50 and last >= sma_200:
+            print('This market' + market + ' is over SMA 5, 50 AND 200 ')
+
+        if last >= sma_5 and last >= sma_50 :
+            print('This market' + market + ' is over SMA 5, 50 ')
+
+        if last >= sma_5 :
+            print('This market' + market + ' is over SMA 5')
 
 
 def simple_request(url):
