@@ -22,25 +22,25 @@ def tick():
     agent = analysis.Analysis('USD-BTC', 'hour')
     market_summaries = simple_request('https://bittrex.com/api/v1.1/public/getmarketsummaries')
     for summary in market_summaries['result']:
-        market = summary['MarketName']
-        last = summary['Last']
-        agent.change_market(market)
-        rsi = agent.calculate_rsi(agent.trim_data(14))
-        sma_5 = agent.calculate_sma(agent.trim_data(5))
-        sma_50 = agent.calculate_sma(agent.trim_data(50))
-        sma_200 = agent.calculate_sma(agent.trim_data(200))
+        if summary['BaseVolume'] >= 12:
+            market = summary['MarketName']
+            last = summary['Last']
+            agent.change_market(market)
+            rsi = agent.calculate_rsi(agent.trim_data(14))
 
-        if rsi < 20:
-            print("This Market is oversold :" + market + ' . RSI = ' + format_float(rsi))
-
-        if last >= sma_5 and last >= sma_50 and last >= sma_200:
-            print('This market' + market + ' is over SMA 5, 50 AND 200 ')
-
-        if last >= sma_5 and last >= sma_50 :
-            print('This market' + market + ' is over SMA 5, 50 ')
-
-        if last >= sma_5 :
-            print('This market' + market + ' is over SMA 5')
+            if rsi <= 25:
+                print("This Market is oversold :" + market + ' . RSI = ' + format_float(rsi))
+                sma_5 = agent.calculate_sma(agent.trim_data(5))
+                if last >= sma_5:
+                    sma_50 = agent.calculate_sma(agent.trim_data(50))
+                    if last >= sma_50:
+                        sma_200 = agent.calculate_sma(agent.trim_data(200))
+                        if last >= sma_200:
+                            print(market + ' price is over SMA 5, 50 AND 200 ')
+                        else:
+                            print(market + ' price is over SMA 5 and 50')
+                    else:
+                        print(market + ' price is over SMA 5')
 
 
 def simple_request(url):
