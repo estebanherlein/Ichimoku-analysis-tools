@@ -22,6 +22,7 @@ def tick():
     print('Running routine')
     agent = analysis.Analysis('USD-BTC', 'hour')
     market_summaries = simple_request('https://bittrex.com/api/v1.1/public/getmarketsummaries')
+    delete_content('data.json')
     for summary in market_summaries['result']:
         if summary['BaseVolume'] >= 12:
             market = summary['MarketName']
@@ -59,6 +60,11 @@ def tick():
             tempdict['Kumo Breakout'] = kumobreakout
             with open('data.json', 'a') as outfile:
                 json.dump(tempdict, outfile)
+
+
+def delete_content(fname):
+    with open(fname, "w"):
+        pass
 
 
 def simple_request(url):
