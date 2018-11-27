@@ -33,7 +33,6 @@ def tick():
             tenkansen = agent.calculate_tenkansen(agent.trim_data(9))
             kijunsen = agent.calculate_kijunsen(agent.trim_data(26))
             tempdict = {}
-
             if senkouspana > senkouspanb:
                 senkouspancross = 'bearish'
             else:
@@ -58,7 +57,9 @@ def tick():
             tempdict['Tenkensen/kijunsen cross '] = tenkensenkijunsencross
             tempdict['Kijunsen Cross'] = kijunsencross
             tempdict['Kumo Breakout'] = kumobreakout
-        
+            with open('data.json', 'a') as outfile:
+                json.dump(tempdict, outfile)
+
 
 def simple_request(url):
     r = requests.get(url)
