@@ -1,8 +1,9 @@
 import time
 import requests
 import analysis
+import json
 
-TICK_INTERVAL = 60  # seconds
+TICK_INTERVAL = 3600  # seconds
 
 
 def main():
@@ -26,22 +27,38 @@ def tick():
             market = summary['MarketName']
             last = summary['Last']
             agent.change_market(market)
-            rsi = agent.calculate_rsi(agent.trim_data(14))
+            # rsi = agent.calculate_rsi(agent.trim_data(14))
+            senkouspana = agent.calculate_senkouspana()
+            senkouspanb = agent.calculate_senkouspanb(agent.trim_data(52))
+            tenkansen = agent.calculate_tenkansen(agent.trim_data(9))
+            kijunsen = agent.calculate_kijunsen(agent.trim_data(26))
+            tempdict = {}
 
-            if rsi <= 25:
-                print("This Market is oversold :" + market + ' . RSI = ' + format_float(rsi))
-                sma_5 = agent.calculate_sma(agent.trim_data(5))
-                if last >= sma_5:
-                    sma_50 = agent.calculate_sma(agent.trim_data(50))
-                    if last >= sma_50:
-                        sma_200 = agent.calculate_sma(agent.trim_data(200))
-                        if last >= sma_200:
-                            print(market + ' price is over SMA 5, 50 AND 200 ')
-                        else:
-                            print(market + ' price is over SMA 5 and 50')
-                    else:
-                        print(market + ' price is over SMA 5')
-
+            if senkouspana > senkouspanb:
+                senkouspancross = 'bearish'
+            else:
+                senkouspancross = 'bullish'
+            if tenkansen < kijunsen:
+                tenkensenkijunsencross = 'bearish'
+            else:
+                tenkensenkijunsencross = 'bullish'
+            if last >kijunsen :
+                kijunsencross = 'bullish'
+            else:
+                kijunsencross = 'bearish'
+            if last > senkouspanb and last > senkouspana:
+                kumobreakout = 'bullish'
+            else:
+                if last < senkouspanb and last < senkouspana:
+                    kumobreakout = 'bearish'
+                else:
+                    kumobreakout = 'inside the kumo'
+            tempdict['Market'] = market
+            tempdict['Senkou Span Cross'] = senkouspancross
+            tempdict['Tenkensen/kijunsen cross '] = tenkensenkijunsencross
+            tempdict['Kijunsen Cross'] = kijunsencross
+            tempdict['Kumo Breakout'] = kumobreakout
+        
 
 def simple_request(url):
     r = requests.get(url)
