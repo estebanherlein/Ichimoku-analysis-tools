@@ -37,7 +37,12 @@ The Kijun Sen Cross signal occurs when the price crosses the Kijun Sen (Standard
 
 ##### Kumo Cloud Breakout
 
-The Kumo Breakout signal occurs when the price leaves or crosses the Kumo (Cloud)
+The Kumo Breakout signal occurs when the price leaves or crosses the Kumo cloud (26 days in the future)
+
+##### Kumo Shadow Breakout
+
+The Kumo Shadow Breakout signal occurs when the price leaves or crosses the Kumo shadow (present)
+
 
 ##### Chikou Span Cross
 
