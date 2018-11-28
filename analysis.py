@@ -37,22 +37,22 @@ class Analysis:
         ninedayhigh = 0
         ninedaylow = 1000000
         for item in somedata:
-           if item['H'] > ninedayhigh:
+            if item['H'] > ninedayhigh:
                 ninedayhigh = item['H']
-           else:
-               if item['H'] < ninedaylow:
-                ninedaylow = item['H']
+            else:
+                if item['H'] < ninedaylow:
+                    ninedaylow = item['H']
         return (ninedayhigh + ninedaylow) / 2
 
     def calculate_kijunsen(self, somedata):
         twentysixhigh = 0
         twentysixlow = 1000000
         for item in somedata:
-           if item['H'] > twentysixhigh:
+            if item['H'] > twentysixhigh:
                 twentysixhigh = item['H']
-           else:
-               if item['H'] < twentysixlow:
-                twentysixlow = item['H']
+            else:
+                if item['H'] < twentysixlow:
+                    twentysixlow = item['H']
         return (twentysixhigh + twentysixlow) / 2
 
     def calculate_senkouspana(self):
@@ -62,26 +62,39 @@ class Analysis:
         fiftytwohigh = 0
         fiftytwolow = 1000000
         for item in somedata:
-           if item['H'] >= fiftytwohigh:
+            if item['H'] >= fiftytwohigh:
                 fiftytwohigh = item['H']
-           else:
-               if item['H'] < fiftytwolow:
-                fiftytwolow = item['H']
+            else:
+                if item['H'] < fiftytwolow:
+                   fiftytwolow = item['H']
+        return (fiftytwohigh + fiftytwolow) / 2
+
+    def calculate_senkouspanashadow(self):
+        return (self.calculate_tenkansen(self.trim_shadowdata(9)) + self.calculate_kijunsen(self.trim_shadowdata(26))) / 2
+
+    def calculate_senkouspanbshadow(self, somedata):
+        fiftytwohigh = 0
+        fiftytwolow = 1000000
+        for item in somedata:
+            if item['H'] >= fiftytwohigh:
+                fiftytwohigh = item['H']
+            else:
+                if item['H'] < fiftytwolow:
+                    fiftytwolow = item['H']
         return (fiftytwohigh + fiftytwolow) / 2
 
     def calculate_chikouspan(self):
-       pastcandle = self.getnth_candle(26)
-       chikunspan = self.getnth_candle(1)
+        pastcandle = self.getnth_candle(26)
+        chikunspan = self.getnth_candle(1)
 
-       if  chikunspan['C'] > pastcandle['L'] and chikunspan['C'] > pastcandle['H']:
-           result = 'bullish'
-       else:
-           if chikunspan['C'] < pastcandle['L'] and chikunspan['C'] < pastcandle['H']:
-               result = 'bearish'
-           else:
-               if  pastcandle['H'] > chikunspan['C'] > pastcandle['L']:
-                   result = 'consolidation'
-       return result
+        if chikunspan['C'] > pastcandle['L'] and chikunspan['C'] > pastcandle['H']:
+            result = 'bullish'
+        else:
+            if chikunspan['C'] < pastcandle['L'] and chikunspan['C'] < pastcandle['H']:
+                result = 'bearish'
+            else:
+                result = 'consolidation'
+        return result
 
     def trim_data(self, units):
         data = self.simple_request(self.market, self.interval)
@@ -93,6 +106,22 @@ class Analysis:
             if i >= firstcandle:
                 li.append(item)
                 i = i + 1
+            else:
+                i = i + 1
+        return li
+
+    def trim_shadowdata(self, units):
+        data = self.simple_request(self.market, self.interval)
+        dataset = data['result']
+        li = []
+        firstcandle = len(dataset) - (units + 26)
+        i = 0
+        a = 0
+        for item in dataset:
+            if i >= firstcandle and a <= 26:
+                li.append(item)
+                i = i + 1
+                a = a + 1
             else:
                 i = i + 1
         return li

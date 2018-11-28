@@ -10,10 +10,10 @@ After that it saves the data into a file as a json object that will be the datab
  ((26-period high + 26-period low)/2)
 
 ##### Senkou Span A (Leading Span A):
- ((Conversion Line + Base Line)/2)
+ ((Conversion Line + Base Line)/2) ; Plotted 26 days in the future
 
 ##### Senkou Span B (Leading Span B):
- ((52-period high + 52-period low)/2)
+ ((52-period high + 52-period low)/2) ; Plotted 26 days in the future
  
 ##### Chikou Span (Lagging Span): 
 

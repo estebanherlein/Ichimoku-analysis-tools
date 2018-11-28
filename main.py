@@ -31,6 +31,8 @@ def tick():
             # rsi = agent.calculate_rsi(agent.trim_data(14))
             senkouspana = agent.calculate_senkouspana()
             senkouspanb = agent.calculate_senkouspanb(agent.trim_data(52))
+            senkouspanashadow = agent.calculate_senkouspanashadow()
+            senkouspanbshadow = agent.calculate_senkouspanbshadow(agent.trim_shadowdata(52))
             tenkansen = agent.calculate_tenkansen(agent.trim_data(9))
             kijunsen = agent.calculate_kijunsen(agent.trim_data(26))
             tempdict = {}
@@ -47,17 +49,25 @@ def tick():
             else:
                 kijunsencross = 'bearish'
             if last > senkouspanb and last > senkouspana:
-                kumobreakout = 'bullish'
+                kumocloudbreakout = 'bullish'
             else:
                 if last < senkouspanb and last < senkouspana:
-                    kumobreakout = 'bearish'
+                    kumocloudbreakout = 'bearish'
                 else:
-                    kumobreakout = 'consolidation'
+                    kumocloudbreakout = 'consolidation'
+            if last > senkouspanbshadow and last > senkouspanashadow:
+                kumoshadowbreakout = 'bullish'
+            else:
+                if last < senkouspanbshadow and last < senkouspanashadow:
+                    kumoshadowbreakout = 'bearish'
+                else:
+                    kumoshadowbreakout = 'consolidation'
             tempdict['Market'] = market
             tempdict['Senkou Span Cross'] = senkouspancross
             tempdict['Tenkensen/kijunsen cross '] = tenkensenkijunsencross
             tempdict['Kijunsen Cross'] = kijunsencross
-            tempdict['Kumo Breakout'] = kumobreakout
+            tempdict['Kumo Cloud Breakout'] = kumocloudbreakout
+            tempdict['Kumo Shadow Breakout'] = kumoshadowbreakout
             tempdict['Chikun Span Cross'] = agent.calculate_chikouspan()
             with open('data.json', 'a') as outfile:
                 json.dump(tempdict, outfile)
