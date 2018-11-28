@@ -11,6 +11,13 @@ class AnalysisTestCase(unittest.TestCase):
     def test_trimdata10days(self):
         self.assertEqual(len(self.usdbtc.trim_data(10)), 10)
 
+    def test_getnthcandle(self):
+        print(self.usdbtc.getnth_candle(26))
+        self.assertEqual(len(self.usdbtc.getnth_candle(26)), 7)
+
+    def test_calculatechikunspan(self):
+        print(self.usdbtc.calculate_chikouspan())
+
     def test_calculate_sma(self):
         print(self.usdbtc.calculate_sma(self.usdbtc.trim_data(21)))
 

@@ -69,6 +69,20 @@ class Analysis:
                 fiftytwolow = item['H']
         return (fiftytwohigh + fiftytwolow) / 2
 
+    def calculate_chikouspan(self):
+       pastcandle = self.getnth_candle(26)
+       chikunspan = self.getnth_candle(1)
+
+       if  chikunspan['C'] > pastcandle['L'] and chikunspan['C'] > pastcandle['H']:
+           result = 'bullish'
+       else:
+           if chikunspan['C'] < pastcandle['L'] and chikunspan['C'] < pastcandle['H']:
+               result = 'bearish'
+           else:
+               if  pastcandle['H'] > chikunspan['C'] > pastcandle['L']:
+                   result = 'consolidation'
+       return result
+
     def trim_data(self, units):
         data = self.simple_request(self.market, self.interval)
         dataset = data['result']
@@ -79,6 +93,20 @@ class Analysis:
             if i >= firstcandle:
                 li.append(item)
                 i = i + 1
+            else:
+                i = i + 1
+        return li
+
+    def getnth_candle(self, units):
+        data = self.simple_request(self.market, self.interval)
+        dataset = data['result']
+        li = {}
+        nthcandle = len(dataset) - units
+        i = 0
+        for item in dataset:
+            if i == nthcandle:
+                li = item
+                pass
             else:
                 i = i + 1
         return li

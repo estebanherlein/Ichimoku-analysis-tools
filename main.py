@@ -42,7 +42,7 @@ def tick():
                 tenkensenkijunsencross = 'bearish'
             else:
                 tenkensenkijunsencross = 'bullish'
-            if last >kijunsen :
+            if last > kijunsen:
                 kijunsencross = 'bullish'
             else:
                 kijunsencross = 'bearish'
@@ -52,14 +52,16 @@ def tick():
                 if last < senkouspanb and last < senkouspana:
                     kumobreakout = 'bearish'
                 else:
-                    kumobreakout = 'inside the kumo'
+                    kumobreakout = 'consolidation'
             tempdict['Market'] = market
             tempdict['Senkou Span Cross'] = senkouspancross
             tempdict['Tenkensen/kijunsen cross '] = tenkensenkijunsencross
             tempdict['Kijunsen Cross'] = kijunsencross
             tempdict['Kumo Breakout'] = kumobreakout
+            tempdict['Chikun Span Cross'] = agent.calculate_chikouspan()
             with open('data.json', 'a') as outfile:
                 json.dump(tempdict, outfile)
+    print('Routine done, lets sleep')
 
 
 def delete_content(fname):

@@ -14,6 +14,10 @@ After that it saves the data into a file as a json object that will be the datab
 
 ##### Senkou Span B (Leading Span B):
  ((52-period high + 52-period low)/2)
+ 
+##### Chikou Span (Lagging Span): 
+
+ Close plotted 26 days in the past
 
 
 ## Signals
@@ -34,3 +38,7 @@ The Kijun Sen Cross signal occurs when the price crosses the Kijun Sen (Standard
 ##### Kumo Cloud Breakout
 
 The Kumo Breakout signal occurs when the price leaves or crosses the Kumo (Cloud)
+
+##### Chikou Span Cross
+
+The Chikou Span Cross signal occurs when the Chikou Span (Lagging line) rises above or falls below the price.
