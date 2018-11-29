@@ -22,13 +22,12 @@ def tick():
     print('Running routine')
     agent = analysis.Analysis('USD-BTC', 'hour')
     market_summaries = simple_request('https://bittrex.com/api/v1.1/public/getmarketsummaries')
-    delete_content('data.json')
+    li = []
     for summary in market_summaries['result']:
-        if summary['BaseVolume'] >= 12:
+        if summary['BaseVolume'] >= 50:
             market = summary['MarketName']
             last = summary['Last']
             agent.change_market(market)
-            # rsi = agent.calculate_rsi(agent.trim_data(14))
             senkouspana = agent.calculate_senkouspana()
             senkouspanb = agent.calculate_senkouspanb(agent.trim_data(52))
             senkouspanashadow = agent.calculate_senkouspanashadow()
@@ -69,8 +68,11 @@ def tick():
             tempdict['Kumo Cloud Breakout'] = kumocloudbreakout
             tempdict['Kumo Shadow Breakout'] = kumoshadowbreakout
             tempdict['Chikun Span Cross'] = agent.calculate_chikouspan()
-            with open('data.json', 'a') as outfile:
-                json.dump(tempdict, outfile)
+            li.append(tempdict)
+            print(market + ' is done')
+    delete_content('data.json')
+    with open('data.json', 'a') as outfile:
+        json.dump(li, outfile)
     print('Routine done, lets sleep')
 
 
