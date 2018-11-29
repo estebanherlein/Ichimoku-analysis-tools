@@ -23,8 +23,9 @@ def tick():
     agent = analysis.Analysis('USD-BTC', 'hour')
     market_summaries = simple_request('https://bittrex.com/api/v1.1/public/getmarketsummaries')
     li = []
+    string = 'BTC'
     for summary in market_summaries['result']:
-        if summary['BaseVolume'] >= 300:
+        if string in summary['MarketName'] and summary['BaseVolume'] >= 90 :
             market = summary['MarketName']
             last = summary['Last']
             agent.change_market(market)
