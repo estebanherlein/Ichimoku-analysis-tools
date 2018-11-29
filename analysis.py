@@ -7,32 +7,6 @@ class Analysis:
         self.market = market
         self.interval = interval
 
-    def calculate_sma(self, somedata):
-        total = 0
-        for item in somedata:
-            total = total + item['O']
-        return total / len(somedata)
-
-    def calculate_rsi(self, somedata):
-        length = len(somedata)
-        i = 0
-        totaldown = 0
-        totalup = 0
-        for item in somedata:
-            if i == 0:
-                lastclose = item['C']
-                i = i + 1
-            else:
-                thisclose = item['C']
-                if thisclose - lastclose >= 0:
-                    totalup = totalup + (thisclose - lastclose)
-                else:
-                    totaldown = totaldown + abs(thisclose - lastclose)
-                lastclose = item['C']
-        rs = (totalup / length) / (totaldown / length)
-        rsi = 100 - (100 / (1 + rs))
-        return rsi
-
     def calculate_tenkansen(self, somedata):
         ninedayhigh = 0
         ninedaylow = 1000000
@@ -101,13 +75,8 @@ class Analysis:
         dataset = data['result']
         li = []
         firstcandle = len(dataset) - units
-        i = 0
-        for item in dataset:
-            if i >= firstcandle:
-                li.append(item)
-                i = i + 1
-            else:
-                i = i + 1
+        for item in dataset[firstcandle:]:
+            li.append(item)
         return li
 
     def trim_shadowdata(self, units):
@@ -115,15 +84,11 @@ class Analysis:
         dataset = data['result']
         li = []
         firstcandle = len(dataset) - (units + 26)
-        i = 0
-        a = 0
-        for item in dataset:
-            if i >= firstcandle and a <= 26:
+        a = 1
+        for item in dataset[firstcandle:]:
+            if a <= units:
                 li.append(item)
-                i = i + 1
                 a = a + 1
-            else:
-                i = i + 1
         return li
 
     def getnth_candle(self, units):
@@ -131,13 +96,8 @@ class Analysis:
         dataset = data['result']
         li = {}
         nthcandle = len(dataset) - units
-        i = 0
-        for item in dataset:
-            if i == nthcandle:
-                li = item
-                pass
-            else:
-                i = i + 1
+        for item in dataset[nthcandle:]:
+            li = item
         return li
 
     def change_market(self, market):

@@ -24,7 +24,7 @@ def tick():
     market_summaries = simple_request('https://bittrex.com/api/v1.1/public/getmarketsummaries')
     li = []
     for summary in market_summaries['result']:
-        if summary['BaseVolume'] >= 50:
+        if summary['BaseVolume'] >= 300:
             market = summary['MarketName']
             last = summary['Last']
             agent.change_market(market)
