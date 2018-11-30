@@ -1,7 +1,4 @@
-import time
-import requests
-import analysis
-import json
+import time, requests, json, Ichimoku
 
 TICK_INTERVAL = 3600  # seconds
 
@@ -20,12 +17,12 @@ def main():
 
 def tick():
     print('Running routine')
-    agent = analysis.Analysis('USD-BTC', 'hour')
+    agent = Ichimoku.Ichimoku('USD-BTC', 'hour')
     market_summaries = simple_request('https://bittrex.com/api/v1.1/public/getmarketsummaries')
     li = []
     string = 'BTC'
     for summary in market_summaries['result']:
-        if string in summary['MarketName'] and summary['BaseVolume'] >= 90 :
+        if string in summary['MarketName'] and summary['BaseVolume'] >= 110:
             market = summary['MarketName']
             last = summary['Last']
             agent.change_market(market)
