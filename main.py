@@ -33,7 +33,7 @@ def tick():
             tenkansen = agent.calculate_tenkansen(agent.trim_data(9))
             kijunsen = agent.calculate_kijunsen(agent.trim_data(26))
             tempdict = {}
-            if senkouspana > senkouspanb:
+            if senkouspana < senkouspanb:
                 senkouspancross = 'bearish'
             else:
                 senkouspancross = 'bullish'
