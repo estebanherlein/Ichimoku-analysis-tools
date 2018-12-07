@@ -1,6 +1,6 @@
 # Ichimoku analysis tools
-This routine calculates the different values associated to the Ichimoku Cloud analysis.
-After that it saves the data into a file as a json object that will be the database from which we will pick trending markets
+The main routine querys bittrex api and uses Ichimoku Kinko Hyo to spot reversal and continuations patterns.
+
 
 ## Indicators
 ##### Tenkan-sen (Turning Line): 
