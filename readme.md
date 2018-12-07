@@ -1,4 +1,4 @@
-# Trade Signal Harvester
+# Ichimoku analysis tools
 This routine calculates the different values associated to the Ichimoku Cloud analysis.
 After that it saves the data into a file as a json object that will be the database from which we will pick trending markets
 
@@ -47,3 +47,4 @@ The Kumo Shadow Breakout signal occurs when the price leaves or crosses the Kumo
 ##### Chikou Span Cross
 
 The Chikou Span Cross signal occurs when the Chikou Span (Lagging line) rises above or falls below the price.
+
