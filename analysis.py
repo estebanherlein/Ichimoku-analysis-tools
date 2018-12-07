@@ -11,31 +11,43 @@ class AnalysisTools:
         data = self.simple_request(self.market, self.interval)
         dataset = data['result']
         li = []
-        firstcandle = len(dataset) - units
-        for item in dataset[firstcandle:]:
-            li.append(item)
+        i = 1
+        for item in reversed(dataset):
+            if i <= units:
+                li.append(item)
+                i = i + 1
+            else:
+                break
         return li
 
     def trim_shadowdata(self, units):
         data = self.simple_request(self.market, self.interval)
         dataset = data['result']
         li = []
-        firstcandle = len(dataset) - (units + 26)
+        i = 1
         a = 1
-        for item in dataset[firstcandle:]:
-            if a <= units:
+        for item in reversed(dataset):
+            if a >= 26 and i <= units:
                 li.append(item)
-                a = a + 1
+                i = i + 1
+            else:
+                if a < 26:
+                    a = a + 1
+                else:
+                    break
         return li
 
     def getnth_candleback(self, units):
         data = self.simple_request(self.market, self.interval)
         dataset = data['result']
         li = {}
-        nthcandle = len(dataset) - units
-        for item in dataset[nthcandle:]:
-            li = item
-            break
+        i = 1
+        for item in reversed(dataset):
+            if i == units:
+                li = item
+                break
+            else:
+                i = i + 1
         return li
 
     def change_market(self, market):

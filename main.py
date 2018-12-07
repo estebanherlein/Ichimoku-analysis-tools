@@ -22,7 +22,7 @@ def tick():
     li = []
     string = 'BTC'
     for summary in market_summaries['result']:
-        if string in summary['MarketName'] and summary['BaseVolume'] >= 110:
+        if string in summary['MarketName'] and summary['BaseVolume'] >= 150:
             market = summary['MarketName']
             last = summary['Last']
             agent.change_market(market)
