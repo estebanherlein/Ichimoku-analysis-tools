@@ -1,4 +1,4 @@
-import analysis
+from classes import analysis
 
 
 class Ichimoku(analysis.AnalysisTools):
@@ -36,11 +36,11 @@ class Ichimoku(analysis.AnalysisTools):
                 fiftytwohigh = item['H']
             else:
                 if item['H'] < fiftytwolow:
-                   fiftytwolow = item['H']
+                    fiftytwolow = item['H']
         return (fiftytwohigh + fiftytwolow) / 2
 
     def calculate_senkouspanashadow(self):
-        return (self.calculate_tenkansen(self.trim_shadowdata(9)) + self.calculate_kijunsen(self.trim_shadowdata(26))) / 2
+        return (self.calculate_tenkansen(self.trim_shadowdata(9))+self.calculate_kijunsen(self.trim_shadowdata(26)))/2
 
     def calculate_senkouspanbshadow(self, somedata):
         fiftytwohigh = 0
@@ -66,3 +66,21 @@ class Ichimoku(analysis.AnalysisTools):
                 result = 'consolidation'
         return result
 
+    def tenkansen_cross(self, ninedaysdata, twentysixdaysdata):
+        if self.calculate_tenkansen(ninedaysdata) > self.calculate_kijunsen(twentysixdaysdata):
+            return '\u001b[34m'+'over Kijun-sen'+'\033[0m'
+        else:
+            if self.calculate_tenkansen(ninedaysdata) < self.calculate_kijunsen(twentysixdaysdata):
+                return '\u001b[31m'+'under Kijun-sen'+'\033[0m'
+            else:
+                return '\u001b[33m'+'crossover'+'\033[0m'
+
+    def close_over_kumo_shadow(self, somedata):
+        present = self.getnth_candleback(1)
+        if present['C'] > self.calculate_senkouspanashadow() and present['C'] > self.calculate_senkouspanbshadow(somedata):
+            return '\u001b[34m'+'over kumo'+'\033[0m'
+        else:
+            if present['C'] < self.calculate_senkouspanashadow() and present['C'] < self.calculate_senkouspanbshadow(somedata):
+                return '\u001b[31m'+'under kumo'+'\033[0m'
+            else:
+                return '\u001b[33m'+'inside kumo'+'\033[0m'

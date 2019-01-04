@@ -1,5 +1,6 @@
 import unittest
-import analysis
+from classes import analysis
+
 
 class AnalysisTestCase(unittest.TestCase):
 
@@ -18,6 +19,7 @@ class AnalysisTestCase(unittest.TestCase):
     def test_getnthcandle(self):
         print(self.usdbtc.getnth_candleback(26))
         self.assertEqual(len(self.usdbtc.getnth_candleback(26)), 7)
+
 
 if __name__ == "__main__":
     unittest.main()

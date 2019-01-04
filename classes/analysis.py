@@ -37,13 +37,13 @@ class AnalysisTools:
                     break
         return li
 
-    def getnth_candleback(self, units):
+    def getnth_candleback(self, nth):
         data = self.simple_request(self.market, self.interval)
         dataset = data['result']
         li = {}
         i = 1
         for item in reversed(dataset):
-            if i == units:
+            if i == nth:
                 li = item
                 break
             else:
@@ -56,8 +56,8 @@ class AnalysisTools:
     def change_interval(self, interval):
         self.interval = interval
 
-    def simple_request(self, market, interval):
+    @staticmethod
+    def simple_request(market, interval):
         url = 'https://bittrex.com/Api/v2.0/pub/market/GetTicks?marketName=' + market + '&tickInterval=' + interval
         r = requests.get(url)
         return r.json()
-

@@ -1,50 +1,56 @@
 # Ichimoku analysis tools
-The main routine querys bittrex api and uses Ichimoku Kinko Hyo to spot reversal and continuations patterns.
+
+## class AnalysisTools:
+
+######def trim_data(self, units):
+returns a list with the last **units** candles.
+
+######def trim_shadowdata(self, units):
+returns a list with the  last **units** candles, starting 26 candles in the past.
+
+######def getnth_candleback(self, nth):
+returns a dictionary with a single candle. 
+
+######def change_market(self, market)
+changes bittrex market pair
+
+######def change_interval(self, interval):
+sets the candlestick interval [“oneMin”, “fiveMin”, “thirtyMin”, “hour”, “day”] 
+
+######def simple_request(self, market, interval):
+requests data from bittrex
 
 
-## Indicators
-##### Tenkan-sen (Turning Line): 
- ((9-period high + 9-period low)/2)
+## class Ichimoku(analysis.AnalysisTools):
 
-##### Kijun-sen (Standard Line):
+######def calculate_tenkansen(self, somedata):
+((9-period high + 9-period low)/2)
+
+######def calculate_kijunsen(self, somedata):
  ((26-period high + 26-period low)/2)
 
-##### Senkou Span A (Leading Span A):
- ((Conversion Line + Base Line)/2) ; Plotted 26 days in the future
+######def calculate_senkouspana(self):}
+((Conversion Line + Base Line)/2) ; Plotted 26 days in the future
 
-##### Senkou Span B (Leading Span B):
- ((52-period high + 52-period low)/2) ; Plotted 26 days in the future
- 
-##### Chikou Span (Lagging Span): 
+######def calculate_senkouspanb(self, somedata):
+((52-period high + 52-period low)/2) ; Plotted 26 days in the future
 
+######def calculate_senkouspanashadow(self):
+calculates senkouspana 26 units back 
+
+######def calculate_senkouspanbshadow(self, somedata):
+calculates senkouspanb 26 units back 
+
+######def calculate_chikouspan(self):
  Close plotted 26 days in the past
+ 
+######def tenkansen_cross(self, somedata):
+checks if tenkansen is over kijunsen
+
+######def close_over_kumo_shadow(self):
+checks the last candle to compere the close to both senkou span shadow a and senkou span shadow b
 
 
-## Signals
 
-##### Senkou Span Cross
-
-The Senkou Span Cross signal occurs when the Senkou Span A (1st leading line) crosses the Senkou Span B (2nd leading line).
-
-##### Tenkan-sen/ kijun-sen Cross
-
-The Tenkan Sen / Kijun Sen Cross signal occurs when the Tenkan Sen (Turning line) crosses the Kijun Sen (Standard line).
-
-
-##### Kijunsen Cross
-
-The Kijun Sen Cross signal occurs when the price crosses the Kijun Sen (Standard line).
-
-##### Kumo Cloud Breakout
-
-The Kumo Breakout signal occurs when the price leaves or crosses the Kumo cloud (26 days in the future)
-
-##### Kumo Shadow Breakout
-
-The Kumo Shadow Breakout signal occurs when the price leaves or crosses the Kumo shadow (present)
-
-
-##### Chikou Span Cross
-
-The Chikou Span Cross signal occurs when the Chikou Span (Lagging line) rises above or falls below the price.
+TODO:
 

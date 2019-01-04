@@ -1,5 +1,6 @@
 import unittest
-import Ichimoku
+from classes import Ichimoku
+
 
 class IchimokuTestCase(unittest.TestCase):
 
